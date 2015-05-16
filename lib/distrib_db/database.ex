@@ -3,23 +3,19 @@ defmodule DistribDb.Database do
   alias DistribDb.DatabaseSupervisor
   use GenServer
 
-  @spec start_link :: pid
   def start_link do
     Logger.debug "Starting database"
     GenServer.start_link(__MODULE__, nil, name: :db_manager)
   end
 
-  @spec create_local_db(String.t) :: pid
   def create_local_db(name) do
     GenServer.call(:db_manager, {:new, name})
   end
 
-  @spec drop_local_db(String.t) :: Atom
   def drop_local_db(name) do
     GenServer.call(:db_manager, {:drop, name})
   end
 
-  @spec restore_local_db(String.t) :: pid
   def restore_local_db(name) do
     Logger.debug "Restoring database #{name}"
     
@@ -30,7 +26,6 @@ defmodule DistribDb.Database do
     GenServer.call(:db_manager, {:restore, name, db})
   end
 
-  @spec create_db(String.t) :: tuple
   def create_db(name) do
     Logger.debug "Creating db #{name}"
     {results, _bad_nodes} = :rpc.multicall(__MODULE__, :create_local_db, [name], :timer.seconds(5))
