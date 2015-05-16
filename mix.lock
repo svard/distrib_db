@@ -1,0 +1,3 @@
+%{"conform": {:hex, :conform, "0.13.0"},
+  "exrm": {:hex, :exrm, "0.15.3"},
+  "pipe": {:git, "git://github.com/batate/elixir-pipes.git", "fbbe0997f761b02fe5b6e809b5ee4e3fba9c819d", []}}
