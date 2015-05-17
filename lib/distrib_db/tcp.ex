@@ -22,8 +22,15 @@ defmodule DistribDb.Tcp do
     |> Command.parse()
     |> Command.run()
 
-    write_line(msg, client)
-    serve(client)
+    case msg do
+      {:error, :enotconn} ->
+        Logger.info "Client disconnected"
+        :disconnected
+      
+      _ ->    
+        write_line(msg, client)
+        serve(client)
+    end
   end
 
   defp read_line(socket) do
@@ -34,7 +41,9 @@ defmodule DistribDb.Tcp do
     :gen_tcp.send socket, format_response(line)
   end
 
-  defp format_response({:ok, msg}), do: msg 
+  defp format_response({:ok, msg}), do: msg
+
+  defp format_response({:error, :not_found}), do: "NOK NOT FOUND\r\n"
 
   defp format_response({:error, :unknown_command}), do: "NOK UNKNOWN COMMAND\r\n"
 

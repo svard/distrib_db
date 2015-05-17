@@ -36,6 +36,7 @@ defmodule DistribDb.Tcp.Command do
 
   def run({:get, db, key}) do
     case Database.get db, key do
+      {:ok, nil} -> {:error, :not_found}                          
       {:ok, value} -> {:ok, "OK #{value}\r\n"}
       {:error, _} = err -> err
     end
