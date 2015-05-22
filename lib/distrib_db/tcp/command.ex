@@ -2,7 +2,7 @@ defmodule DistribDb.Tcp.Command do
   alias DistribDb.Database
   
   def parse(line) do
-    case String.split(line, " ") do
+    case String.split(line, " ", parts: 4) do
       ["CREATE", db] -> {:ok, {:create, String.strip(db)}}
 
       ["DROP", db] -> {:ok, {:drop, String.strip(db)}}
