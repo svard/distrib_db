@@ -30,4 +30,9 @@ defmodule DistribDb.DatabaseWorker do
   def handle_call(:get, _from, db) do
     {:reply, db, db}
   end
+
+  def handle_call(:stop, _from, db) do
+    Logger.debug "Stopping database process"
+    {:stop, :normal, :ok, db}
+  end
 end

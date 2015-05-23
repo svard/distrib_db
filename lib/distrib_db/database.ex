@@ -13,6 +13,7 @@ defmodule DistribDb.Database do
   end
 
   def drop_local_db(name) do
+    stop(name)
     GenServer.call(:db_manager, {:drop, name})
   end
 
@@ -75,6 +76,13 @@ defmodule DistribDb.Database do
     Logger.debug "Deleting #{key} from db #{name}"
     {results, _} = :rpc.multicall(__MODULE__, :delete_local, [name, key], :timer.seconds(5))
     check_ok results
+  end
+
+  def stop(name) do
+    case get_db(name) do
+      nil -> {:error, :db_not_found}
+      pid -> GenServer.call(pid, :stop)
+    end
   end
 
   def sync do
