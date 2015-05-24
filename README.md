@@ -22,6 +22,11 @@ It is then possible to connect to any of the nodes via telnet and run some comma
     telnet> GET store key
     # => 42
 
+The CREATE command can also take a timout in milliseconds when to expire the database
+
+    # Creates a database that delete itself after one day
+    telnet> CREATE store 86400000
+
 All PUT requests will be replicated to every node in the cluster.
 
 To add a new node to the cluster connect it to one of the existing cluster nodes and run the sync command
@@ -30,7 +35,3 @@ To add a new node to the cluster connect it to one of the existing cluster nodes
     iex> DistribDb.Database.sync
 
 This will copy over all existing databases from one of the nodes in the cluster to the new node.
-
-## Todo
-
-Make it possible to expire a database after a predefined time.

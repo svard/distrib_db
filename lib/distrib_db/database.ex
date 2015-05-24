@@ -12,6 +12,12 @@ defmodule DistribDb.Database do
     GenServer.call(:db_manager, {:new, name})
   end
 
+  def create_local_db(name, expire) do
+    GenServer.call(:db_manager, {:new, name})
+    Process.send_after(:db_manager, {:expire, name}, expire)
+    :ok
+  end
+
   def drop_local_db(name) do
     stop(name)
     GenServer.call(:db_manager, {:drop, name})
@@ -30,6 +36,13 @@ defmodule DistribDb.Database do
   def create_db(name) do
     Logger.debug "Creating db #{name}"
     {results, _bad_nodes} = :rpc.multicall(__MODULE__, :create_local_db, [name], :timer.seconds(5))
+
+    {:ok, hd(results)}
+  end
+
+  def create_db(name, expire) do
+    Logger.debug "Creating db #{name} with expire timer in #{expire}ms"
+    {results, _bad_nodes} = :rpc.multicall(__MODULE__, :create_local_db, [name, expire], :timer.seconds(5))
 
     {:ok, hd(results)}
   end
@@ -124,7 +137,7 @@ defmodule DistribDb.Database do
         {:ok, pid} ->
           {:reply, pid, Map.put(dbs, name, pid)}
         _ ->
-          {:stop, "Can't start db", dbs}
+          {:stop, :normal, {:error, "Can't start db"}, dbs}
       end
     end
   end
@@ -134,7 +147,7 @@ defmodule DistribDb.Database do
       {:ok, pid} ->
         {:reply, pid, Map.put(dbs, name, pid)}
       _ ->
-        {:stop, "Can't start db", dbs}
+        {:stop, :normal, {:error, "Can't start db"}, dbs}
     end
   end
   
@@ -148,5 +161,16 @@ defmodule DistribDb.Database do
 
   def handle_call({:drop, name}, _from, dbs) do
     {:reply, :ok, Map.delete(dbs, name)}
+  end
+
+  def handle_info({:expire, name}, dbs) do
+    Logger.info "Database #{name} expired, dropping it"
+    drop_db(name)
+    {:noreply, dbs}
+  end
+
+  def handle_info(_msg, dbs) do
+    Logger.warn "Unknown message arrived at database process"
+    {:noreply, dbs}
   end
 end

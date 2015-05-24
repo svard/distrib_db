@@ -13,6 +13,6 @@ defmodule DistribDb.DatabaseSupervisor do
   end
 
   def init(_) do
-    supervise([worker(DatabaseWorker, [])], strategy: :simple_one_for_one)
+    supervise([worker(DatabaseWorker, [], restart: :transient)], strategy: :simple_one_for_one)
   end
 end

@@ -5,6 +5,9 @@ defmodule DistribDb.Tcp.Command do
     case String.split(line, " ", parts: 4) do
       ["CREATE", db] -> {:ok, {:create, String.strip(db)}}
 
+      ["CREATE", db, expire] ->
+        {:ok, {:create_expire, db: String.strip(db), expire: String.strip(expire)}}
+
       ["DROP", db] -> {:ok, {:drop, String.strip(db)}}
 
       ["GET", db, key] -> {:ok, {:get, String.strip(db), String.strip(key)}}
@@ -19,6 +22,11 @@ defmodule DistribDb.Tcp.Command do
 
   def run({:create, db}) do
     Database.create_db db
+    {:ok, "OK\r\n"}
+  end
+
+  def run({:create_expire, db: db, expire: expire}) do
+    Database.create_db db, String.to_integer(expire)
     {:ok, "OK\r\n"}
   end
 
