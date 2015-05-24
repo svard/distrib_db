@@ -15,6 +15,8 @@ defmodule DistribDb.Tcp.Command do
       ["PUT", db, key, value] -> {:ok, {:put, String.strip(db), String.strip(key), String.strip(value)}}
 
       ["DELETE", db, key] -> {:ok, {:delete, String.strip(db), String.strip(key)}}
+
+      ["EXIST", db] -> {:ok, {:exist, String.strip(db)}}
       
       _ -> {:error, :unknown_command}
     end
@@ -55,6 +57,11 @@ defmodule DistribDb.Tcp.Command do
       :ok -> {:ok, "OK\r\n"}
       {:error, _} = err -> err
     end
+  end
+
+  def run({:exist, db}) do
+    exist? = to_string(Database.exist?(db))
+    {:ok, "OK #{exist?}\r\n"}
   end
 
   def run(_) do

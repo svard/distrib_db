@@ -98,6 +98,10 @@ defmodule DistribDb.Database do
     end
   end
 
+  def exist?(name) do
+    get_db_names |> Enum.member?(name)
+  end
+
   def sync do
     if Enum.count(Node.list) > 0 do
       Node.list
