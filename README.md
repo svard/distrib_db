@@ -22,10 +22,10 @@ It is then possible to connect to any of the nodes via telnet and run some comma
     telnet> GET store key
     # => 42
 
-The CREATE command can also take a timout in milliseconds when to expire the database
+The CREATE command can also take a timout in seconds when to expire the database
 
     # Creates a database that delete itself after one day
-    telnet> CREATE store 86400000
+    telnet> CREATE store 86400
 
 All PUT requests will be replicated to every node in the cluster.
 

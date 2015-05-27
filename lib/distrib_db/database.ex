@@ -14,7 +14,7 @@ defmodule DistribDb.Database do
 
   def create_local_db(name, expire) do
     GenServer.call(:db_manager, {:new, name})
-    Process.send_after(:db_manager, {:expire, name}, expire)
+    Process.send_after(:db_manager, {:expire, name}, (expire*1000))
     :ok
   end
 
