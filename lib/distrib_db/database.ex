@@ -41,7 +41,7 @@ defmodule DistribDb.Database do
   end
 
   def create_db(name, expire) do
-    Logger.debug "Creating db #{name} with expire timer in #{expire}ms"
+    Logger.debug "Creating db #{name} with expire timer in #{expire}s"
     {results, _bad_nodes} = :rpc.multicall(__MODULE__, :create_local_db, [name, expire], :timer.seconds(5))
 
     {:ok, hd(results)}
