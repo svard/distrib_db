@@ -27,7 +27,7 @@ defmodule DistribDb.Tcp do
         Logger.info "Client disconnected"
         :disconnected
       
-      _ ->    
+      _ ->
         write_line(msg, client)
         serve(client)
     end

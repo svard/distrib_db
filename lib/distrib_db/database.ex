@@ -99,6 +99,7 @@ defmodule DistribDb.Database do
   end
 
   def exist?(name) do
+    Logger.debug "Check if db #{name} exist"
     get_db_names |> Enum.member?(name)
   end
 
