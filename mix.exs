@@ -29,6 +29,6 @@ defmodule DistribDb.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     [{:pipe, github: "batate/elixir-pipes"},
-     {:exrm, "~> 0.15"}]
+     {:exrm, "~> 0.16"}]
   end
 end
