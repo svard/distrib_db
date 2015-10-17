@@ -170,7 +170,7 @@ defmodule DistribDb.Database do
 
   def handle_info({:expire, name}, dbs) do
     Logger.info "Database #{name} expired, dropping it"
-    drop_db(name)
+    drop_local_db(name)
     {:noreply, dbs}
   end
 
