@@ -1,4 +1,4 @@
-defmodule DistribDb.Database do
+defmodule DistribDb.Controller do
   require Logger
   alias DistribDb.DatabaseSupervisor
   use GenServer
@@ -170,8 +170,9 @@ defmodule DistribDb.Database do
 
   def handle_info({:expire, name}, dbs) do
     Logger.info "Database #{name} expired, dropping it"
-    drop_local_db(name)
-    {:noreply, dbs}
+    Map.get(dbs, name)
+    |> GenServer.call(:stop)
+    {:noreply, Map.delete(dbs, name)}
   end
 
   def handle_info(_msg, dbs) do

@@ -11,7 +11,7 @@ defmodule DistribDb do
       # Define workers and child supervisors to be supervised
       # worker(DistribDb.Worker, [arg1, arg2, arg3])
       supervisor(DistribDb.DatabaseSupervisor, []),
-      worker(DistribDb.Database, []),
+      worker(DistribDb.Controller, []),
       supervisor(Task.Supervisor, [[name: DistribDb.TaskSupervisor]]),
       worker(Task, [DistribDb.Tcp, :accept, [port]])
     ]
