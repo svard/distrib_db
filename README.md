@@ -32,6 +32,6 @@ All PUT requests will be replicated to every node in the cluster.
 To add a new node to the cluster connect it to one of the existing cluster nodes and run the sync command
 
     iex> Node.connect :"distrib_db@192.168.0.1"
-    iex> DistribDb.Database.sync
+    iex> DistribDb.Controller.sync
 
 This will copy over all existing databases from one of the nodes in the cluster to the new node.
