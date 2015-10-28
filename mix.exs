@@ -3,7 +3,7 @@ defmodule DistribDb.Mixfile do
 
   def project do
     [app: :distrib_db,
-     version: "1.3.0",
+     version: "1.3.1",
      elixir: "~> 1.0",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -14,7 +14,7 @@ defmodule DistribDb.Mixfile do
   #
   # Type `mix help compile.app` for more information
   def application do
-    [applications: [:logger, :pipe, :tzdata],
+    [applications: [:logger, :pipe, :tzdata, :timex],
      mod: {DistribDb, []}]
   end
 
