@@ -1,5 +1,5 @@
 use Mix.Config
 
 config :logger, :console,
-  level: :debug,
+  level: :info,
   format: "$date $time [$level] $message\n"

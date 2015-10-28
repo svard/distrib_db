@@ -1,4 +1,5 @@
 defmodule DistribDb.Tcp.Command do
+  alias DistribDb.Register
   alias DistribDb.Controller
   
   def parse(line) do
@@ -45,7 +46,7 @@ defmodule DistribDb.Tcp.Command do
   end
 
   def run({:get, db, key}) do
-    case Controller.get db, key do
+    case Register.get db, key do
       {:ok, nil} -> {:error, :not_found}                          
       {:ok, value} -> {:ok, "OK #{value}\r\n"}
       {:error, _} = err -> err
